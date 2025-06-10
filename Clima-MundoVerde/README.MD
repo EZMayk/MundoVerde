@@ -31,11 +31,7 @@ Cuenta gratuita en OpenWeatherMap para obtener una API key
 
 Clona el repositorio:
 
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
-
-
-
+git clone https://github.com/EZMayk/MundoVerde.git
 
 ⚙️ Configuración del entorno
 Crea un archivo .env en la raíz del proyecto con el siguiente contenido:
