@@ -1,41 +1,42 @@
-🌱 Clima-MundoVerde
-API REST desarrollada en TypeScript y Express que permite consultar datos climáticos en tiempo real desde OpenWeather y almacenarlos en una base de datos Supabase para auditoría y análisis posteriores.
+# 🌱 Clima-MundoVerde
 
-📦 Tecnologías utilizadas
-Node.js + Express
+Clima-MundoVerde es una API REST desarrollada en TypeScript y Express que permite consultar datos climáticos en tiempo real desde OpenWeather API. Los resultados se almacenan en Supabase (PostgreSQL) para fines de auditoría y análisis posteriores.
 
-* TypeScript
+## 📦 Tecnologías Utilizadas
 
-* TypeORM
+- Node.js + Express
+- TypeScript
+- TypeORM
+- Supabase (PostgreSQL gestionado)
+- OpenWeather API
+- Axios
+- Dotenv
+- CORS
+- JWT (para autenticación)
+- Jest + Supertest (para testing)
 
-* Supabase (PostgreSQL gestionado)
+## 🔧 Requisitos Previos
 
-* OpenWeather API
+- Node.js ≥ 18.x
+- Docker Compose
+- Cuenta gratuita en OpenWeatherMap (para obtener una API key)
 
-* Axios
+## 🚀 Instalación y Ejecución
 
-* Dotenv
-
-* CORS
-
-
-🔧 Requisitos Previos
-
-Node.js ≥ 18.x
-
-Docker Compose
-
-Cuenta gratuita en OpenWeatherMap para obtener una API key
-
-📦 Instalación y Ejecución
-
-Clona el repositorio:
-
+### Clonar el repositorio
+```bash
 git clone https://github.com/EZMayk/MundoVerde.git
+cd MundoVerde
+```
 
-⚙️ Configuración del entorno
-Crea un archivo .env en la raíz del proyecto con el siguiente contenido:
+### Instalación de dependencias
+```bash
+npm install
+```
 
+### Configuración del entorno
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+```env
 DB_HOST=aws-0-us-east-2.pooler.supabase.com
 DB_PORT=6543
 DB_USERNAME=postgres.xsdzrbphlibhwmegavsc
@@ -44,56 +45,107 @@ DB_DATABASE=postgres
 PORT=3000
 OPENWEATHER_API_KEY=fbf0bedef7d799633876a3253f1e575a
 OPENWEATHER_BASE_URL=https://api.openweathermap.org/data/2.5/weather
+```
 
- Pruebas con Thunder Client
-1️⃣ GET /consulta-clima
-Consulta el clima actual de una ciudad utilizando la API de OpenWeather.
+### Instalación de JWT
+```bash
+npm install jsonwebtoken
+npm install --save-dev @types/jsonwebtoken
+```
 
-Método: GET
+### Instalación de Jest para pruebas
+```bash
+npm install --save-dev jest ts-jest @types/jest supertest @types/supertest
+```
+### incia la configuracion de jest
+```
+npx ts-jest config:init
+```
 
-URL: http://localhost:3000/api/consulta-clima?ciudad=Guayaquil
+### instalacion de supertest para simular peticiones HTTP a tu servidor Express para los test de routes.
+```bash
+npm install --save-dev supertest @types/supertest
+```
 
-Parámetros de consulta:
+### Ejecución del proyecto
+```bash
+npm run dev
+```
+El servidor estará disponible en: `http://localhost:3000`
 
-ciudad (string): nombre de la ciudad
+## 📂 Estructura Principal del Proyecto
+```text
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   ├── dtos/
+│   ├── entities/
+│   ├── middlewares/
+│   ├── repositories/
+│   ├── routes/
+│   ├── services/
+│   ├── test/
+│   ├── utils/
+│   ├── app.ts
+├── tests/
+├── .env
+├── .gitignore
+├── docker-compose.yml
+├── package-lock.json
+├── package.json
+├── README.MD
+└── tsconfig.json
+```
 
-📌 Este endpoint realiza:
+## 📡 Endpoints Disponibles
 
-La consulta en OpenWeather.
+### Consultar Clima Actual
+- **Método:** GET  
+- **URL:** `/api/consulta-clima?ciudad=Guayaquil`
 
-Guarda el clima en la base de datos Supabase.
+#### Parámetros:
+- `ciudad` (string) → Nombre de la ciudad a consultar.
 
-Registra la consulta en la tabla consulta.
+✔️ Este endpoint:
+- Consulta la API de OpenWeather.
+- Guarda los datos en Supabase.
+- Registra la consulta en la base de datos.
+- Almacena un log de la consulta.
 
-Guarda el log del resultado.
+### Obtener Fuentes Climáticas
+- **Método:** GET  
+- **URL:** `/api/fuentes`
 
+### Obtener Logs de Consultas
+- **Método:** GET  
+- **URL:** `/api/logs`
 
-🔍 Obtener fuentes climáticas
-Obtiene todas las fuentes climáticas disponibles en la base de datos
-Método: GET
+#### Parámetros opcionales:
+- `ciudad` → Filtra por ciudad.
+- `resultado` → Filtra por "éxito" o "error".
+- `fuente` → Filtra por fuente climática.
 
-URL: http://localhost:3000/api/fuentes
-
-
-
-* Obtener logs de consultas
-Obtiene todos los registros de logs del sistema, con filtros opcionales.
-
-Método: GET
-
-URL: http://localhost:3000/api/logs
-
-Parámetros de consulta opcionales:
-
-ciudad (string)
-
-resultado (string, ejemplo: "éxito" o "error")
-
-fuente (string)
-
-✅ Ejemplo sin filtros:
+#### Ejemplo sin filtros:
+```http
 GET http://localhost:3000/api/logs
+```
 
-
-✅ Ejemplo con filtros:
+#### Ejemplo con filtros:
+```http
 GET http://localhost:3000/api/logs?ciudad=Quito&resultado=éxito
+```
+
+## ✅ Pruebas Unitarias y de Integración
+Para ejecutar las pruebas:
+```bash
+npm test
+```
+
+## 📜 Scripts disponibles en package.json
+```json
+"scripts": {
+  "dev": "nodemon --exec ts-node src/app.ts",
+  "start": "ts-node-dev src/app.ts",
+  "test": "jest"
+}
+```
