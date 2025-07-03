@@ -11,13 +11,13 @@ import { LogSistema } from '../entities/LogSistemaEntity';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    host: 'aws-0-us-east-2.pooler.supabase.com',
-    port: 6543,
-    username: "postgres.xsdzrbphlibhwmegavsc",
-    password: "Menendez2025*_*",
-    database: "postgres",
-    synchronize: true, // En desarrollo solo. En producción usar migraciones.
-    logging: false,
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432'),
+    username: process.env.DB_USERNAME || 'postgres',
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE || 'postgres',
+    synchronize: process.env.NODE_ENV !== 'production', // En desarrollo solo. En producción usar migraciones.
+    logging: process.env.NODE_ENV === 'development',
     entities: [FuenteClimatica, ConsultaClima, Clima, ErrorConsulta, LogSistema],
     migrations: [],
     subscribers: [],
