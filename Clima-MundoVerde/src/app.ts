@@ -9,9 +9,15 @@ import fuenteRoutes from './routes/FuenteClimatica.route';
 import logRoutes from './routes/LogSistema.routes';
 import { verificarToken } from './middlewares/auth.middleware';
 
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger';
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Ruta pública (NO protegida con token)
 app.use('/api/auth', authRoutes);
@@ -31,8 +37,10 @@ AppDataSource.initialize()
     console.log('📡 Data Source initialized');
     app.listen(PORT, () => {
       console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
+      console.log(`📚 Documentación Swagger disponible en: http://localhost:${PORT}/api-docs`);
     });
   })
   .catch((error) => {
     console.error('❌ Error initializing Data Source:', error);
+
   });
