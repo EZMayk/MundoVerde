@@ -1,34 +1,17 @@
 import { Request, Response } from 'express';
 import { generarToken } from '../utils/jwt';
 
-const validarCredenciales = (usuario: string, contraseña: string): boolean => {
-    console.log('🔍 Validando credenciales:', { usuario, contraseña }); // Debug
-    return usuario === 'admin' && contraseña === 'password123';
-};
+const validarCredenciales = (usuario: string, contraseña: string): boolean => 
+    usuario === 'admin' && contraseña === '1234';
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
-    console.log('📝 Request body:', req.body); // Debug
-    const { usuario, contraseña, username, password } = req.body;
+    const { usuario, contraseña } = req.body;
 
-    // Aceptar tanto 'usuario/contraseña' como 'username/password'
-    const user = usuario || username;
-    const pass = contraseña || password;
-
-    if (!user || !pass) {
-        return res.status(400).json({ 
-            error: 'Usuario y contraseña son requeridos',
-            formato: 'Usar "usuario" y "contraseña" o "username" y "password"'
-        });
-    }
-
-    if (validarCredenciales(user, pass)) {
-        const token = generarToken({ usuario: user });
+    if (validarCredenciales(usuario, contraseña)) {
+        const token = generarToken({ usuario });
         return res.json({ token });
     }
 
-    return res.status(401).json({ 
-        error: 'Credenciales inválidas',
-        
-    });
+    return res.status(401).json({ error: 'Credenciales inválidas' });
 };
 
