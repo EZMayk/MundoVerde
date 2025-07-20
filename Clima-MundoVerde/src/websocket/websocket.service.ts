@@ -108,7 +108,7 @@ export class WebSocketService {
         const recommendation = {
             action: this.calculateIrrigationAction(weatherData, cropData),
             reason: `Basado en clima de ${weatherData.ciudad} y estado de ${cropData.cultivo}`,
-            urgency: weatherData.precipitacion > 10 ? 'low' : 'high',
+            urgency: (weatherData.precipitacion ?? 0) > 10 ? 'low' : 'high',
             timestamp: new Date()
         };
 
@@ -123,14 +123,14 @@ export class WebSocketService {
     // === MÉTODOS AUXILIARES ===
     
     private getWeatherRecommendation(weather: WeatherEvent): string {
-        if (weather.precipitacion > 20) return "Suspender riego por lluvia intensa";
+        if ((weather.precipitacion ?? 0) > 20) return "Suspender riego por lluvia intensa";
         if (weather.temperatura > 35) return "Aumentar frecuencia de riego";
         if (weather.humedad < 30) return "Riego adicional recomendado";
         return "Condiciones normales";
     }
 
     private calculateIrrigationAction(weather: WeatherEvent, crop: CropEvent): string {
-        if (weather.precipitacion > 10) return "no_irrigation";
+        if ((weather.precipitacion ?? 0) > 10) return "no_irrigation";
         if (crop.necesidadAgua > 70) return "immediate_irrigation";
         if (weather.temperatura > 30 && crop.necesidadAgua > 50) return "schedule_irrigation";
         return "monitor";
