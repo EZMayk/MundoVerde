@@ -5,7 +5,14 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/app.ts",
     "start": "ts-node-dev src/app.ts",
-    "test": "jest"
+    "test": "jest",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:up-d": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f app",
+    "docker:clean": "docker-compose down -v --remove-orphans",
+    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up"
   },
   "keywords": [],
   "author": "",

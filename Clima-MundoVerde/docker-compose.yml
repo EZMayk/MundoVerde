@@ -1,4 +1,5 @@
 services:
+  # Base de datos PostgreSQL
   db:
     image: postgres:16
     container_name: Clima-MundoVerde-db
@@ -10,7 +11,56 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d   # <--- Monta tus scripts de inicialización
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      - mundoverde-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ClimaMundoverde-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Aplicación Node.js en modo desarrollo
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: Clima-MundoVerde-app
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=2025*_*
+      - DB_DATABASE=ClimaMundoverde-db
+      - PORT=3000
+      - OPENWEATHER_API_KEY=fbf0bedef7d799633876a3253f1e575a
+      - OPENWEATHER_BASE_URL=https://api.openweathermap.org/data/2.5/weather
+      - JWT_SECRET=HolaMundoVerde2025
+      - JWT_EXPIRATION=24h
+    ports:
+      - "3000:3000"
+    volumes:
+      # Montar código fuente para hot reload
+      - ./src:/app/src:ro
+      - ./package.json:/app/package.json:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      # Cache de node_modules para mejor rendimiento
+      - node_modules_cache:/app/node_modules
+    networks:
+      - mundoverde-network
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    # Habilitar debugging
+    stdin_open: true
+    tty: true
 
 volumes:
   pgdata:
+  node_modules_cache:
+
+networks:
+  mundoverde-network:
+    driver: bridge
