@@ -1,8 +1,8 @@
 # Dockerfile para desarrollo
 FROM node:18-alpine
 
-# Instalar dumb-init para mejor manejo de señales
-RUN apk add --no-cache dumb-init
+# Instalar dumb-init y wget para health checks
+RUN apk add --no-cache dumb-init wget
 
 # Crear directorio de trabajo
 WORKDIR /app

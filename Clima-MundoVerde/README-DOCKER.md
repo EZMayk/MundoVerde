@@ -100,6 +100,13 @@ docker exec -it Clima-MundoVerde-db psql -U postgres -d ClimaMundoverde-db
 - **API Docs:** http://localhost:3000/api-docs (si tienes Swagger configurado)
 - **Base de Datos:** localhost:5432
 
+### 🔓 API Endpoints (Todos Públicos - JWT Desactivado)
+- **Health Check:** http://localhost:3000/health
+- **Consulta Clima:** http://localhost:3000/api/consulta-clima?ciudad=Quito
+- **Fuentes:** http://localhost:3000/api/fuentes  
+- **Logs:** http://localhost:3000/api/logs
+- **API Tester:** Abre `api-tester.html` en tu navegador
+
 ## 🚨 Solución de Problemas
 
 ### Si el contenedor de la app no inicia

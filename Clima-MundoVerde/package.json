@@ -12,7 +12,8 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f app",
     "docker:clean": "docker-compose down -v --remove-orphans",
-    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up"
+    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up",
+    "generate-token": "ts-node src/utils/auth-helper.ts"
   },
   "keywords": [],
   "author": "",

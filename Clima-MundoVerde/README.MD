@@ -68,10 +68,49 @@ npm install --save-dev supertest @types/supertest
 ```
 
 ### Ejecución del proyecto
+
+#### Opción 1: Ejecución local
 ```bash
 npm run dev
 ```
+
+#### Opción 2: Ejecución con Docker (Recomendado para desarrollo)
+```bash
+# Levantar todo el entorno (BD + Aplicación)
+npm run docker:up
+
+# Ver logs de la aplicación
+npm run docker:logs
+
+# Parar servicios
+npm run docker:down
+```
+
 El servidor estará disponible en: `http://localhost:3000`
+
+## � Autenticación JWT (DESACTIVADA)
+
+**Nota:** La autenticación JWT está actualmente desactivada. Todas las rutas son públicas y no requieren token.
+
+### Todos los endpoints son públicos:
+- `GET /health` - Health check
+- `GET /health/readiness` - Readiness probe  
+- `GET /health/liveness` - Liveness probe
+- `POST /api/auth/login` - Autenticación (disponible pero no requerida)
+- `GET /api/consulta-clima` - **Ahora público**
+- `GET /api/fuentes` - **Ahora público**
+- `GET /api/logs` - **Ahora público**
+
+### Para reactivar JWT:
+Descomenta la línea `app.use(verificarToken);` en `src/app.ts`
+
+## 🧪 Testing de la API
+
+Abre `api-tester.html` en tu navegador para una interfaz gráfica de testing.
+
+## 🐳 Docker para Desarrollo
+
+Ver `README-DOCKER.md` para instrucciones detalladas de Docker.
 
 ## 📂 Estructura Principal del Proyecto
 ```text
