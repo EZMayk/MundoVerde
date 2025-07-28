@@ -19,12 +19,13 @@ import { WebSocketService } from './websocket/websocket.service';
 const app = express();
 const server = createServer(app);
 
-// Configurar CORS
+// Configurar CORS para permitir cualquier origen (desarrollo)
 const corsOptions = {
-    origin: ['http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:3000', 'http://localhost:9000', 'http://localhost:4000'],
+    origin: true, // Permite cualquier origen en desarrollo
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: true,
+    optionsSuccessStatus: 200 // Para navegadores legacy
 };
 app.use(cors(corsOptions));
 
@@ -78,8 +79,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Servir archivos estáticos (para la página de prueba)
-app.use(express.static('./'));
+// Servir archivos estáticos desde la carpeta public
+app.use(express.static('public'));
+
+// Ruta específica para la interfaz WebSocket
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: 'public' });
+});
+
+// Ruta de prueba para verificar CORS
+app.get('/api/test-cors', (req, res) => {
+    res.json({ 
+        message: 'CORS funcionando correctamente',
+        timestamp: new Date().toISOString(),
+        origin: req.headers.origin
+    });
+});
 
 // Documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
