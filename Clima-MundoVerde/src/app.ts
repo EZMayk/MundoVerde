@@ -159,10 +159,8 @@ AppDataSource.initialize()
   })
   .catch((error) => {
     console.error('❌ Error initializing Data Source:', error);
-    console.error('🔍 Verificar credenciales de base de datos en el archivo .env:');
-    console.error('   - DB_HOST:', process.env.DB_HOST);
-    console.error('   - DB_PORT:', process.env.DB_PORT);
-    console.error('   - DB_USERNAME:', process.env.DB_USERNAME);
-    console.error('   - DB_DATABASE:', process.env.DB_DATABASE);
-    console.error('   - DB_PASSWORD:', process.env.DB_PASSWORD ? '[CONFIGURADA]' : '[NO CONFIGURADA]');
+    console.error('🔍 Verificar configuración de SQLite:');
+    console.error('   - DB_PATH:', process.env.DB_PATH || './database.sqlite');
+    console.error('   - NODE_ENV:', process.env.NODE_ENV || 'development');
+    console.error('   - Verificar que el directorio tenga permisos de escritura');
   });

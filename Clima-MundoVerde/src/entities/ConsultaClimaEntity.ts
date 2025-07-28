@@ -16,10 +16,10 @@ export class ConsultaClima {
     @Column()
     ciudad!: string;
 
-    @Column('decimal')
+    @Column('real')
     latitud!: number;
 
-    @Column('decimal')
+    @Column('real')
     longitud!: number;
 
     @Column()

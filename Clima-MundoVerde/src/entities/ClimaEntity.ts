@@ -10,18 +10,18 @@ export class Clima {
     @JoinColumn({ name: 'consultaId' })
     consulta!: ConsultaClima;
 
-    @Column('decimal')
+    @Column('real')
     temperatura!: number;
 
-    @Column('decimal')
+    @Column('real')
     humedad!: number;
 
     @Column()
     descripcion!: string;
 
-    @Column('decimal')
+    @Column('real')
     viento!: number;
 
-    @Column('decimal')
+    @Column('real')
     presion!: number;
 }
